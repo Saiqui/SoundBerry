@@ -22,7 +22,12 @@ print("Connecte a : ", adress)
 print("Client : ", client)
 
 
-
+def end_connection():
+	client.close()
+	server.close()
+	os.system("python bluetooth_phone_control.py")
+	
+	
 def analyse_trame(donnee):
 		global keyCommand
 		global valeurCommand
@@ -71,8 +76,7 @@ def case_keyCommand(key):
 		commande = "amixer -D equal sset 09.\ 16\ kHz " + valeurCommand
 		os.system(commande)
 	if key == 'c':
-		client.close()
-		server.close()
+		end_connection()
 		
 def reset_command():
 	global keyCommand
@@ -94,6 +98,4 @@ try:
 		reset_command()	
 
 except:
-	client.close()
-	server.close()
-
+	end_connection()
