@@ -25,7 +25,7 @@ print("Client : ", client)
 def end_connection():
 	client.close()
 	server.close()
-	os.system("python bluetooth_phone_control.py")
+	os.system("python $HOME/SoundBerry/src/bluetooth_phone_control.py")
 	
 	
 def analyse_trame(donnee):
