@@ -21,6 +21,9 @@ client, adress = server.accept()
 print("Connecte a : ", adress)
 print("Client : ", client)
 
+# On prend le nom de l'interface wifi pour la portabilite
+wifiInterface = os.popen("ip -o a | grep \"wl\" | head -n1 | awk '{print $2}'").read()
+
 
 def end_connection():
 	client.close()
@@ -40,6 +43,8 @@ def analyse_trame(donnee):
 				position_point = i
 				keyCommand = donnee[i-1]
 				valeurCommand = donnee[position_point+1 : len(donnee)]
+				
+				
 def case_keyCommand(key):
 	if key == 'v':
 		commande = "amixer set Master " + valeurCommand
@@ -75,6 +80,12 @@ def case_keyCommand(key):
 	if key == '9':
 		commande = "amixer -D equal sset 09.\ 16\ kHz " + valeurCommand
 		os.system(commande)
+		
+	if key == 'w':
+		commande = "iwlist " + wifiInterface.rstrip() + " scan | grep -i 'essid'"
+		ssid = os.popen(commande)
+		print(ssid.read())
+		
 	if key == 'c':
 		end_connection()
 		
