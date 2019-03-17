@@ -28,7 +28,7 @@ wifiInterface = os.popen("ip -o a | grep \"wl\" | head -n1 | awk '{print $2}'").
 def end_connection():
 	client.close()
 	server.close()
-	os.system("python $HOME/SoundBerry/src/bluetooth_phone_control.py")
+	os.system("python /home/pi/SoundBerry/src/bluetooth_phone_control.py")
 	
 	
 def analyse_trame(donnee):
@@ -48,6 +48,7 @@ def analyse_trame(donnee):
 def case_keyCommand(key):
 	if key == 'v':
 		commande = "amixer set Master " + valeurCommand
+		print(commande)
 		os.system(commande)
 		
 	if key == '0':
@@ -82,9 +83,33 @@ def case_keyCommand(key):
 		os.system(commande)
 		
 	if key == 'w':
-		commande = "iwlist " + wifiInterface.rstrip() + " scan | grep -i 'essid'"
-		ssid = os.popen(commande)
-		print(ssid.read())
+		commande = "sudo iwlist " + wifiInterface.rstrip() + " scan | grep -i 'essid' >> wifi.txt"
+		print(commande)
+		os.system(commande)
+		essid = open("wifi.txt", "r")
+		data = []
+		k=0
+		while 1:
+			line=essid.readline()
+			if not line: break
+			i=0
+			while line[i] != '"':
+				i += 1
+			i += 1
+			while line[i] != '"':
+				data.append(line[i])
+				i += 1
+			data.append(":")
+			k+=1
+
+		data_send = "".join(data)
+		print(data_send)
+
+		client.send(data_send)
+
+		essid.close()
+		os.system("rm wifi.txt")
+
 		
 	if key == 'c':
 		end_connection()
@@ -99,10 +124,11 @@ def reset_command():
 
 try:
 	while True:
+		
 		donnee_bluez = client.recv(1024)
 		
 		analyse_trame(donnee_bluez)
-		
+
 		print(keyCommand)
 		print(valeurCommand)
 		case_keyCommand(keyCommand)
