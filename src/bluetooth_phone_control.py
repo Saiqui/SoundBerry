@@ -50,7 +50,8 @@ def case_keyCommand(key):
 		commande = "amixer set Master " + valeurCommand
 		print(commande)
 		os.system(commande)
-		
+	if key == 'm':
+		os.system("amixer sset Master toggle")
 	if key == '0':
 		commande = "amixer -D equal sset 00.\ 31\ Hz " + valeurCommand
 		os.system(commande)
