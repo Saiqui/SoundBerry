@@ -45,11 +45,18 @@ def analyse_trame(donnee):
 				valeurCommand = donnee[position_point+1 : len(donnee)]
 				
 				
-def case_keyCommand(key):
-	if key == 'v':
+def case_keyCommand(key, commandKey):
+	if (key == 'v' and commandKey != 'u' and commandKey != 'm'):
 		commande = "amixer set Master " + valeurCommand
 		print(commande)
 		os.system(commande)
+	if(key == 'v' and commandKey == 'm'):
+		commande = "amixer sset Master mute"
+		os.system(commande)
+	if(key == 'v' and commandKey == 'u'):
+		commande = "amixer sset Master unmute"
+		os.system(commande)
+		
 	if key == 'm':
 		os.system("amixer sset Master toggle")
 	if key == '0':
@@ -132,7 +139,7 @@ try:
 
 		print(keyCommand)
 		print(valeurCommand)
-		case_keyCommand(keyCommand)
+		case_keyCommand(keyCommand, valeurCommand)
 		reset_command()	
 
 except:
