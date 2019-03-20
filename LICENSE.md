@@ -1,6 +1,6 @@
 # LICENSE DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 
-'''txt
+```txt
                     Version 2, December 2004 
 
  Copyright (C) 2004 Sam Hocevar <sam@hocevar.net> 
@@ -13,4 +13,4 @@
    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION 
 
   0. You just DO WHAT THE FUCK YOU WANT TO.
-'''
+```
