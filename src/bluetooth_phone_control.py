@@ -43,8 +43,28 @@ def analyse_trame(donnee):
 				position_point = i
 				keyCommand = donnee[i-1]
 				valeurCommand = donnee[position_point+1 : len(donnee)]
+
+def reset_command():
+	global keyCommand
+	global valeurCommand
+	
+	keyCommand = 	""
+	valeurCommand = ""
+
+def wifiPswdDecodage(trame):
+	global wifiSSID
+	global wifiPass
+	
+	for i in range(len(trame)):
 				
-				
+		if trame[i] == '.':
+			position_point = i
+			wifiSSID = trame[0 : position_point]
+			wifiPass = trame[position_point+1 : len(trame)]
+			print(wifiPass)
+			print(wifiSSID)
+		
+	
 def case_keyCommand(key, commandKey):
 	if (key == 'v' and commandKey != 'u' and commandKey != 'm'):
 		commande = "amixer set Master " + valeurCommand
@@ -90,7 +110,7 @@ def case_keyCommand(key, commandKey):
 		commande = "amixer -D equal sset 09.\ 16\ kHz " + valeurCommand
 		os.system(commande)
 		
-	if key == 'w':
+	if key == 'w' and commandKey == 'l':
 		commande = "sudo iwlist " + wifiInterface.rstrip() + " scan | grep -i 'essid' >> wifi.txt"
 		print(commande)
 		os.system(commande)
@@ -117,18 +137,19 @@ def case_keyCommand(key, commandKey):
 
 		essid.close()
 		os.system("rm wifi.txt")
-
+	
+	if key == 'w' and commandKey == 'c':
+		print("debug debut ici")
+		client.send("ok")
+		print('ok envoyer')
+		data = client.recv(1024)
+		print('donnee recu')
+		wifiPswdDecodage(data)
+		data = ""
 		
 	if key == 'c':
 		end_connection()
 		
-def reset_command():
-	global keyCommand
-	global valeurCommand
-	
-	keyCommand = 	""
-	valeurCommand = ""
-
 
 try:
 	while True:
@@ -140,7 +161,8 @@ try:
 		print(keyCommand)
 		print(valeurCommand)
 		case_keyCommand(keyCommand, valeurCommand)
-		reset_command()	
+		reset_command()
+		print('====================================================================')
 
 except:
 	end_connection()
