@@ -1,5 +1,4 @@
 #!/bin/bash
 
-echo -e "\033[45mINSTALLATION DES DEPENDANCES\033[0m"
-#TODO
-
+echo -e "INSTALL DEPENDENCIES..."
+sudo apt install -y git openssh-client openssh-server raspi-gpio python3-gpiozero expect(a verif)
